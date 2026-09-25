@@ -24,6 +24,7 @@ class Server {
     company_sizes: "/company-sizes",
     industries: "/industries",
     s3Files: "/s3Files",
+    players: "/players",
   };
 
   constructor() {
@@ -71,6 +72,7 @@ class Server {
 
     // Rutas privadas que se checa la autenticación
     this.app.use(this.apiPaths.session, authenticateJWT, routes.sessionRoutes);
+    this.app.use(this.apiPaths.players, authenticateJWT, routes.playerRoutes);
     this.app.use(
       this.apiPaths.companies,
       authenticateJWT,

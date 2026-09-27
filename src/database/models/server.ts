@@ -22,7 +22,6 @@ class Server {
     session: "/session",
     companies: "/companies",
     company_sizes: "/company-sizes",
-    industries: "/industries",
     s3Files: "/s3Files",
     players: "/players",
   };
@@ -78,11 +77,7 @@ class Server {
       authenticateJWT,
       routes.companyRoutes
     );
-    this.app.use(
-      this.apiPaths.industries,
-      authenticateJWT,
-      routes.industryRoutes
-    );
+
     this.app.use(this.apiPaths.s3Files, authenticateJWT, routes.s3FilesRoutes);
   }
 

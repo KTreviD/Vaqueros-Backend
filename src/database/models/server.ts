@@ -20,7 +20,6 @@ class Server {
     auth: "/auth",
     mfa: "/mfa",
     session: "/session",
-    companies: "/companies",
     company_sizes: "/company-sizes",
     s3Files: "/s3Files",
     players: "/players",
@@ -72,11 +71,6 @@ class Server {
     // Rutas privadas que se checa la autenticación
     this.app.use(this.apiPaths.session, authenticateJWT, routes.sessionRoutes);
     this.app.use(this.apiPaths.players, authenticateJWT, routes.playerRoutes);
-    this.app.use(
-      this.apiPaths.companies,
-      authenticateJWT,
-      routes.companyRoutes
-    );
 
     this.app.use(this.apiPaths.s3Files, authenticateJWT, routes.s3FilesRoutes);
   }

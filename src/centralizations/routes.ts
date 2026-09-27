@@ -1,4 +1,3 @@
-import companyRoutes from "../modules/companies/companies.routes";
 import authRoutes from "../modules/auth/auth.routes";
 import mfaRoutes from "../modules/mfa/mfa.routes";
 import sessionRoutes from "../modules/session/session.routes";
@@ -13,6 +12,5 @@ export const routes = {
 
   // Rest
   playerRoutes,
-  companyRoutes,
   s3FilesRoutes,
 };

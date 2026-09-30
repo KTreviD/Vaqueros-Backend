@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vaqueros-backend-service
+
+spec:
+  selector:
+    app: vaqueros-backend
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+
+  type: NodePort

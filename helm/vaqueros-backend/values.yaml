@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: vaqueros-backend
+  tag: v2
+  pullPolicy: Never
+
+container:
+  port: 8000
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8000
+
+existingSecret: vaqueros-backend-env

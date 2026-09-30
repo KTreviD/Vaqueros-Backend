@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaqueros-backend
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: vaqueros-backend
+
+  template:
+    metadata:
+      labels:
+        app: vaqueros-backend
+
+    spec:
+      containers:
+        - name: vaqueros-backend
+          image: vaqueros-backend:local
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8000
+
+          envFrom:
+            - secretRef:
+                name: vaqueros-backend-env
+
+          env:
+            - name: PORT
+              value: "8000"

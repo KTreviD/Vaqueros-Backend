@@ -1,5 +1,4 @@
 import { NotFoundError } from "../../common/utils/customError";
-import { industriesService } from "../industries/industries.module";
 import { Player } from "../../database/models/player";
 
 export class PlayerService {

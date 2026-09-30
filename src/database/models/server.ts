@@ -16,6 +16,7 @@ import cookieParser from "cookie-parser";
 class Server {
   private app: Application;
   private port: string;
+
   private apiPaths = {
     auth: "/auth",
     mfa: "/mfa",
@@ -25,20 +26,24 @@ class Server {
     players: "/players",
   };
 
-  constructor() {
+  constructor(connectDatabase: boolean = true) {
     this.app = express();
     this.port = config.PORT;
 
     this.app.set("trust proxy", 1);
 
-    // DataBase Connection
-    this.dbConnection();
+    // Database connection
+    if (connectDatabase) {
+      this.dbConnection();
+    }
 
     // Middlewares
     this.app.use(cors(corsOptions));
     this.app.options("*", cors(corsOptions));
+
     this.app.use(express.json({ limit: "10mb" }));
     this.app.use(express.urlencoded({ extended: true }));
+
     this.app.use(express.static("public"));
 
     // Agrega cookie-parser antes de passport
@@ -46,30 +51,40 @@ class Server {
 
     // Passport
     this.app.use(passport.initialize());
-    setupJwtStrategy(passport); // <- registrar la estrategia aquí
+    setupJwtStrategy(passport);
 
-    // Protected Routes And Controllers
+    // Health check
+    this.app.get("/health", (_req, res) => {
+      res.status(200).json({
+        status: "ok",
+        service: "vaqueros-backend",
+      });
+    });
+
+    // Routes
     this.routes();
 
-    //LETS SEE IF WORKS
+    // Error handler LETS SEE IF WORKS
     this.app.use(errorHandler);
   }
 
   async dbConnection() {
     try {
       await db.authenticate();
+      console.log("Database connected");
     } catch (error: any) {
       throw new Error(error);
     }
   }
 
   routes() {
-    // Rutas publicas que no se checa la autenticación
+    // Public routes
     this.app.use(this.apiPaths.auth, routes.authRoutes);
     this.app.use(this.apiPaths.mfa, routes.mfaRoutes);
 
-    // Rutas privadas que se checa la autenticación
+    // Private routes
     this.app.use(this.apiPaths.session, authenticateJWT, routes.sessionRoutes);
+
     this.app.use(this.apiPaths.players, authenticateJWT, routes.playerRoutes);
 
     this.app.use(this.apiPaths.s3Files, authenticateJWT, routes.s3FilesRoutes);

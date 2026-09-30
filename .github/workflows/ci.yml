@@ -30,6 +30,7 @@ jobs:
         run: npm test
         env:
           DATABASE_PUBLIC_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
+          RAILWAY_ENVIRONMENT_NAME: ${{ secrets.RAILWAY_ENVIRONMENT_NAME }}
 
       - name: Build TypeScript
         run: npm run build

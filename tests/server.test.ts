@@ -5,9 +5,8 @@ import Server from "../src/database/models/server";
 describe("Express Server", () => {
   it("should respond to GET /health", async () => {
     const server = new Server(false);
-    const app = server.getApp();
 
-    const response = await request(app).get("/health");
+    const response = await request(server.getApp()).get("/health");
 
     expect(response.status).toBe(200);
 

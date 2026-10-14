@@ -12,6 +12,8 @@ import {
 } from "../../common/strategies/jwt.strategy";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import { logger } from "../../middlewares/logger";
+import { metricsMiddleware, metricsHandler } from "../../middlewares/metrics";
 
 class Server {
   private app: Application;
@@ -53,6 +55,12 @@ class Server {
     this.app.use(passport.initialize());
     setupJwtStrategy(passport);
 
+    // IMPORTANTE: antes de las rutas
+    this.app.use(metricsMiddleware);
+
+    // Logger
+    this.app.use(logger);
+
     // Health check
     this.app.get("/health", (_req, res) => {
       res.status(200).json({
@@ -60,6 +68,9 @@ class Server {
         service: "vaqueros-backend",
       });
     });
+
+    // Prometheus
+    this.app.get("/metrics", metricsHandler);
 
     // Routes
     this.routes();

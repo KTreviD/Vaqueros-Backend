@@ -17,4 +17,5 @@ describe("Express Server", () => {
   });
 });
 
-// TESTs
+// TESTS
+// Esta es una rama para ver los tests de la aplicación, para ver si funcionan correctamente.

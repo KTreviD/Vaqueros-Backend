@@ -32,5 +32,28 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
+      # -------------------------
+      # SECURITY - SNYK
+      # -------------------------
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Snyk dependency scan
+        run: snyk test
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Snyk code scan
+        run: snyk code test
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # -------------------------
+      # DOCKER
+      # -------------------------
+
       - name: Build Docker image
         run: docker build -t vaqueros-backend:${{ github.sha }} .

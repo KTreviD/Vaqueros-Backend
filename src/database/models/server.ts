@@ -26,6 +26,8 @@ class Server {
     company_sizes: "/company-sizes",
     s3Files: "/s3Files",
     players: "/players",
+    users: "/users",
+    team: "/team",
   };
 
   constructor(connectDatabase: boolean = true) {
@@ -97,6 +99,8 @@ class Server {
     this.app.use(this.apiPaths.session, authenticateJWT, routes.sessionRoutes);
 
     this.app.use(this.apiPaths.players, authenticateJWT, routes.playerRoutes);
+    this.app.use(this.apiPaths.users, authenticateJWT, routes.userRoutes);
+    this.app.use(this.apiPaths.team, authenticateJWT, routes.teamRoutes);
 
     this.app.use(this.apiPaths.s3Files, authenticateJWT, routes.s3FilesRoutes);
   }

@@ -136,9 +136,7 @@ export class AuthController {
       const { code } = existVerificationCode.parse({
         ...req.query,
       });
-      console.log("CHECK", req.query);
       const { type } = req.query;
-      console.log({ type });
       const response = await this.authService.isEmailVerificationCodeValid(
         code,
         type as string as VerificationEnum
